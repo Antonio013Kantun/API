@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseIntPipe } from '@nestjs/common';
 import{CreateUserDto} from './Dto/create-User.dto';
 import {UsersService} from './users.service';
+import {User} from './users.entity'; 
 import {get} from 'https';
 
 
@@ -13,4 +14,20 @@ export class UsersController {
         console.log(newUser)
         return this.usersService.createUser(newUser)
     }
+
+    @Get()
+    getUsers():Promise<User[]>{
+        return this.usersService.getUsers();
+    }
+
+    @Get(':id')
+    getUser(@Param('id', ParseIntPipe) id:number) : Promise<User>{
+        return this.usersService.getUser(id);
+    }
+
+    @Post()
+    createUser(@Body() newUser: CreateUserDto){
+        return this.usersService.createUser(newUser)
+    }
+
 }
